@@ -35,6 +35,8 @@ router.get('/search', (req, res)=> {
       
     }
     var audioOnly=info.formats[info.formats.findIndex(x=>String(x.qualityLabel)=="null")]
+    console.log(info.formats)
+    var videoOnly=info.formats[info.formats.findIndex(x=>x.isAudio==false)]
     for(var i=remove.length-1;i>=0;i-=1){
       //console.log(info.formats[remove[i]])
       info.formats.splice(remove[i],1)
@@ -94,12 +96,13 @@ router.post("/message",(req,res)=>{
         subject:"YOUDOW USER FEEDBACK",
         text:`${data.name} has been sended a feedback\n\nmessage_type: - ${data.type}\nuser_email :-${data.email}\nmessage :- ${data.message}\n\nPlease replay`
       }
-      transporter.sendMail(mailer,(err,res)=>{
+      transporter.sendMail(mailer,(err,data)=>{
         if(err) {
-          res.error("true")
+          res.json({sts:false})
         }
         else{
-          res.success("true")
+          console.log("success")
+          res.json({sts:true})
         }
       })
 })

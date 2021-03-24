@@ -24,11 +24,11 @@
     </div>
   </div>
 </section>
-<section id="feedbackSection">
+<section id="feedbackSection" name="feedbackSection">
   <p class="text-success">REPORT A ISSUE OR WRITE A FEEDBACK</p>
   
   <div id="formSection" class="col-md-6 col-12">
-    <table id="feedbackTable">
+    <table id="feedbackForm" action="#">
       <label for="name">Enter your name</label>
       <input type="text" id="name" placeholder="" name="name">
       
@@ -647,18 +647,36 @@
           url:"/message",
           dataType:"json",
           data:data,
-        //  timeout:5000,
+          timeout:5000,
           success:(res)=>{
-            alert("success")
+             if(res.sts==true){
+             $("#feedbackSection").css({filter:"blur(0px)"})
+             $("#progressBack").hide()
+             $("#notifyBar p").html(`Hi ${data.name.toLowerCase()}...<br>Tankyou for your valuable feedback`)
+             $("#notifyBar").removeAttr("hidden").hide().slideDown(1000)
+             setTimeout(()=>{
+               $("#notifyBar").slideUp(1000)
+             },5000)
+             setTimeout(()=>{
+               $("#notifyBar").slideUp(1000)
+               $("#feedbackSection").load(document.URL+"#feedbackSection")
+             },5000)
+             }
+            
           },
           error:(err)=>{
-            console.log(JSON.stringify(err))
+           if(err.sts==false){
             alert("Something went wrong with sending your feedback \nPlease try again...")
+            $("#feedbackSection").css("filter","blur(0px)")
+              $("#progressBack").hide(500)
+           }
           }
         })
       }
     })
-    
+    $("#notfyClose").click((e)=>{
+      $("#notifyBar").slideUp(1000)
+    })
     
   })
   function dowClick(url){
