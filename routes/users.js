@@ -35,8 +35,8 @@ router.get('/search', (req, res)=> {
       
     }
     var audioOnly=info.formats[info.formats.findIndex(x=>String(x.qualityLabel)=="null")]
-    console.log(info.formats)
-    var videoOnly=info.formats[info.formats.findIndex(x=>x.isAudio==false)]
+    //console.log(info.formats)
+    var videoOnly=info.formats[info.formats.findIndex(x=>x.hasAudio==false&&x.qualityLabel=="480p")]
     for(var i=remove.length-1;i>=0;i-=1){
       //console.log(info.formats[remove[i]])
       info.formats.splice(remove[i],1)
@@ -47,6 +47,8 @@ router.get('/search', (req, res)=> {
     var format=info.formats
     var data=[]
     data.push({quality:"mp3",itag:audioOnly.itag,size:"MP3"})
+    console.log(videoOnly)
+    data.push({quality:"vid only",itag:videoOnly.itag,size:String(parseFloat(videoOnly.bitrate)*parseFloat(det.lengthSeconds)/8000000)})
     for(var i in format){
       var quade={
         quality: format[i].qualityLabel,
@@ -64,7 +66,7 @@ router.get('/search', (req, res)=> {
       download:data,
       channel:det.author.name
     }
-    console.log(format)
+    //console.log(format)
     res.json(jsonData)
     }catch(err){
       console.log("afsal")

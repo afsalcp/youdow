@@ -10,7 +10,7 @@
     <label for="url" id="urlLabel">ENTER URL HERE:-</label>
     <input type="text" placeholder="Paste your url..." id="videoUrl">
     <button id="searchBtn" class="fa fa-search"></button>
-    <h6 id="errShow" hidden="true">This video could not be found!!</h6>
+    <h6 id="errShow" hidden="true">This video could not be found!!<br>error : Server Timeout</h6>
     <div id="videoResultPage" hidden="true">
       <img src="images/logo.png" alt="channel" id="channelPro">
       <img src="images/logo.png" alt="thumbnail" id="thumbnail">
@@ -567,7 +567,7 @@
           type:"GET",
           url:"/search?url="+urlInp,
           dataType:"json",
-         // timeout:20000,
+          timeout:10000,
           success:(res)=>{
             try{
             if(res!="false"){
@@ -665,7 +665,8 @@
             
           },
           error:(err)=>{
-           if(err.sts==false){
+            
+           if(err.sts==false ||err.statusText=="timeout"){
             alert("Something went wrong with sending your feedback \nPlease try again...")
             $("#feedbackSection").css("filter","blur(0px)")
               $("#progressBack").hide(500)
@@ -683,7 +684,6 @@
     url=url.split("**,,##")
     console.log(url)
     $(document).ready(()=>{
-      alert()
       $("#searchPage").css({filter:"blur(5px)"})
       $("#downStarter").removeAttr("hidden").show(500)
       
