@@ -3,6 +3,14 @@ var router = express.Router();
 var fs = require("fs");
 
 var ytdl=require("ytdl-core")
+const nodemailer=require('nodemailer')
+var transporter=nodemailer.createTransport({
+  service:"gmail",
+  auth:{
+    user:"cpafsal66@gmail.com",
+    pass:"9496130662"
+  }
+})
 
 
 /* GET users listing. */
@@ -77,5 +85,24 @@ router.get("/download",async(req,res)=>{
     console.log(err)
   }
 })
+router.post("/message",(req,res)=>{
+  var data=req.body
+  console.log(data)
+  var mailer={
+        from:"cpafsal66@gmail.com",
+        to:"afsalcpats@gmail.com",
+        subject:"YOUDOW USER FEEDBACK",
+        text:`${data.name} has been sended a feedback\n\nmessage_type: - ${data.type}\nuser_email :-${data.email}\nmessage :- ${data.message}\n\nPlease replay`
+      }
+      transporter.sendMail(mailer,(err,res)=>{
+        if(err) {
+          res.error("true")
+        }
+        else{
+          res.success("true")
+        }
+      })
+})
+
 
 module.exports = router;
