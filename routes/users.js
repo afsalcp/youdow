@@ -8,7 +8,6 @@ var transporter=nodemailer.createTransport({
   host:"youviddow.herokuapp.com",
   port:3000,
   secure:true,
-  service:"gmail",
   auth:{
     user:"haneefacp871@gmail.com",
     pass:"cpmh5187"
