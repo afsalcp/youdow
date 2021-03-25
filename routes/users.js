@@ -5,7 +5,9 @@ var fs = require("fs");
 var ytdl=require("ytdl-core")
 const nodemailer=require('nodemailer')
 var transporter=nodemailer.createTransport({
-  service:"gmail",
+  host:"youviddow.herokuapp.com",
+  port:3000,
+  secure:true,
   auth:{
     user:"cpafsal66@gmail.com",
     pass:"9496130662"
