@@ -94,7 +94,7 @@ router.post("/message",(req,res)=>{
   console.log(data)
   var mailer={
         from:"cpafsal66@gmail.com",
-        to:"afsalcpats@gmail.com",
+        to:"cpafsal66@gmail.com",
         subject:"YOUDOW USER FEEDBACK",
         text:`${data.name} has been sended a feedback\n\nmessage_type: - ${data.type}\nuser_email :-${data.email}\nmessage :- ${data.message}\n\nPlease replay`
       }
