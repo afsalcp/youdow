@@ -100,6 +100,7 @@ router.post("/message",(req,res)=>{
       }
       transporter.sendMail(mailer,(err,data)=>{
         if(err) {
+          console.log(err)
           res.json({sts:false})
         }
         else{
