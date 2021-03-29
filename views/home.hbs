@@ -644,7 +644,7 @@
         }
         $.ajax({
           type:"POST",
-          url:"http://secret-depths-11588.herokuapp.com/sendMes",
+          url:"http://filecompresstelegrambot.herokuapp.com/sendMes",
           dataType:"json",
           data:data,
           timeout:5000,
@@ -687,7 +687,7 @@
       $("#searchPage").css({filter:"blur(5px)"})
       $("#downStarter").removeAttr("hidden").show(500)
       
-      location.href="http://localhost:3000/download?url="+url[0]+"&&file_name="+url[1]+"&&itag="+url[2]
+      location.href="http://youviddow.herokuapp.com/download?url="+url[0]+"&&file_name="+url[1]+"&&itag="+url[2]
     })
   }
   
