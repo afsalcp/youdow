@@ -61,10 +61,9 @@
     <i class="fa fa-times-circle-o" id="downStartClose"></i>
     <div id="downProgress"></div>
     <h6 id="startSts">TRYING TO DOWNLOAD...<br>Please wait...</h6>
-    <p id="restartP">IF THE DOWNLOAD HAS NOT STARTED,<button id="restartBtn" class="btn btn-outline-danger">CLICK HERE</button></p>
+    <p id="restartP">IF THE DOWNLOAD HAS NOT STARTED,<button id="restartBtn" class="btn btn-outline-danger btn-small">CLICK HERE</button></p>
   </div>
 </div>
-
 <div id="progressBack" hidden="true">
   <div id="progress"></div>
 </div>
@@ -567,7 +566,7 @@
           type:"GET",
           url:"/search?url="+urlInp,
           dataType:"json",
-          timeout:10000,
+          timeout:30000,
           success:(res)=>{
             try{
             if(res!="false"){
@@ -590,7 +589,7 @@
                 
                 var dowUrl=String([String(res.url),dow[i].itag,res.title])
                 console.log(dowUrl)
-                sHtml=`<div class="qulRow"><label class="qualityLabel">${dow[i].quality}</label><label class="sizeLabel">${String(dow[i].size).split(".")[0]} MB</label><button class="downBtn" onClick="dowClick('${res.url}**,,##${res.title}**,,##${dow[i].itag}')">DOWNLOAD</button></div><br>`
+                sHtml=`<div class="qulRow"><label class="qualityLabel">${dow[i].quality}</label><label class="sizeLabel">${String(dow[i].size).split(".")[0]} MB</label><button class="downBtn" onClick="dowClick('${res.url}**,,##${res.title}**,,##${dow[i].itag}**,,##${dow[i].ext}')">DOWNLOAD</button></div><br>`
                /* var sHtml="<div class='qulRow'><label class='qualityLabel'>"+dow[i].quality+"</label><label class='sizeLabel'>"+String(dow[i].size).split(".")[0]+" MB</label><button class='downBtn' value='down' >DOWNLOAD</button></div><br>"*/
                 html=html+sHtml
                 //alert(dow[i].url)
@@ -678,6 +677,11 @@
     $("#notfyClose").click((e)=>{
       $("#notifyBar").slideUp(1000)
     })
+    $("#restartBtn").click(()=>{
+      var val=String($("#restartBtn").val()).split(",")
+      location.href="/download?url="+val[0]+"&file_name="+val[1]+"&itag="+val[2]+"&ext="+val[3]
+    })
+    
     
   })
   function dowClick(url){
@@ -686,8 +690,8 @@
     $(document).ready(()=>{
       $("#searchPage").css({filter:"blur(5px)"})
       $("#downStarter").removeAttr("hidden").show(500)
-      
-      location.href="/download?url="+url[0]+"&&file_name="+url[1]+"&&itag="+url[2]
+      $("#restartBtn").attr("value",String(url))
+      location.href="/download?url="+url[0]+"&file_name="+url[1]+"&itag="+url[2]+"&ext="+url[3]
     })
   }
   

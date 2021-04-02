@@ -48,14 +48,15 @@ router.get('/search', (req, res)=> {
     //console.log(det.author.thumbnails )
     var format=info.formats
     var data=[]
-    data.push({quality:"mp3",itag:audioOnly.itag,size:"MP3"})
+    data.push({quality:"mp3",itag:audioOnly.itag,size:"MP3",ext:".mp3"})
     console.log(videoOnly)
-    data.push({quality:"vid only",itag:videoOnly.itag,size:String(parseFloat(videoOnly.bitrate)*parseFloat(det.lengthSeconds)/8000000)})
+    data.push({quality:"vid only",itag:videoOnly.itag,size:String(parseFloat(videoOnly.bitrate)*parseFloat(det.lengthSeconds)/8000000),ext:".mp4"})
     for(var i in format){
       var quade={
         quality: format[i].qualityLabel,
         itag:format[i].itag,
-        size:String(parseFloat(det.lengthSeconds*format[i].bitrate)/8000000)
+        size:String(parseFloat(det.lengthSeconds*format[i].bitrate)/8000000),
+        ext:".mp4"
       }
       data.push(quade)
     }
@@ -83,10 +84,11 @@ router.get("/download",async(req,res)=>{
   try{
   var url=req.query.url
   var file_name=req.query.file_name.replace(/ /g,"")
+  var ext=req.query.ext
   console.log("afsal.    "+url)
-  res.attachment(file_name+".mp4")
+  res.attachment(file_name+ext)
   console.log(req.query)
-  ytdl(url,{quality:req.query.itag,format:"mp4"}).pipe(res)
+  ytdl(url,{quality:req.query.itag}).pipe(res)
   }catch(err){
     console.log(err)
   }
