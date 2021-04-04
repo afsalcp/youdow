@@ -1,0 +1,293 @@
+
+{{#if login}}
+  <section id="homeSection" class="col-12 col-md-7" style="margin:0 auto">
+    {{#each message}}
+    <div class="col-11 mt-2" style="margin:0 auto;">
+      <label class="name text text-primary">{{#if this.name}}{{this.name}}{{else}}NO NAME{{/if}}</label>
+      <button class="btn btn-success viewBtn" onclick="viewCont('{{this._id}}')">VIEW</button>
+    </div>
+    {{/each}}
+  </section>
+  <section id="messageView" hidden="hidden">
+    <div id="mesMain" class="col-10 col-md-8">
+      <i class="fa fa-trash-o btn" id="deleteMessage"></i>
+      <i class="fa fa-times-circle-o text text-danger btn" id="windowClose"></i>
+      <h5 >MESSAGE</h5>
+      <div >
+        <label id="mesMainName">from : no name</label>
+        <label id="mesMainEmail">email : @email</label>
+        <label id="mesMainType">type : feedback</label>
+        <textarea id="mesMainMessage" readonly="true">message : this is a message</textarea>
+        <div style="height:20px"></div>
+      </div>
+    </div>
+  </section>
+{{else}}
+<section id="loginSection" class="col-10 col-md-5">
+  <form method="POST" action="/admin/adminLogin"> 
+  <label for="id">Enter admin id</label>
+  <input type="text" id="id" class="col-12 " name="id">
+  <label for="password">Enter password</label>
+  <input type="password" id="password" class="col-12" name="password">
+  
+  <input type="submit" id="subBtn" value="LOGIN" class="btn">
+  </form>
+</section>
+
+{{/if}}
+<style >
+  
+  #mesMainMessage{
+    width: 90%;
+    
+    min-height: 100px;
+    max-height: 280px;
+    
+    margin-left: 5%;
+    margin-top: 10px;
+    
+    background: none;
+    
+    border: solid 1px grey;
+    border-radius: 6px;
+    
+    color: white;
+    
+    outline: none;
+    
+    text-align: center;
+    
+    padding-top: 20px;
+  }
+  #mesMain div label{
+    color: #0060ff;
+    
+    font-family: Courier New;
+    font-size: 15px;
+    font-weight: bold;
+    
+    margin-top: 10px;
+    
+    width: 90%;
+  }
+  #windowClose{
+    font-size: 20px;
+    
+    position: absolute;
+    
+    right: 20px;
+    top: 20px;
+    
+    margin: auto;
+  }
+  #deleteMessage{
+    font-size: 20px;
+    
+    color: red;
+    
+    position: absolute;
+    
+    left: 20px;
+    top: 20px;
+    margin: auto;
+    
+    background: none;
+    
+    width: 30px;
+    height: 30px;
+    
+    padding-left: 6.6px;
+    padding-top: 4px;
+    
+    border: solid 1px red;
+    border-radius: 50%;
+    
+  }
+  #mesMain h5{
+    text-align: center;
+    
+    font-family: Courier New;
+    font-weight: bold;
+    
+    color: #f700ff;
+    
+    text-shadow: 0 0 5px #00ff51;
+    text-decoration: underline;
+    
+    margin-top: 30px;
+  }
+  #mesMain{
+    background: linear-gradient(to right,#0c1a523b,#310d1b60);
+    
+    margin: 0 auto;
+    top:80px;
+    
+    border: solid 0.8px black;
+    border-radius: 6px;
+    
+  }
+  @media(min-width:720px){
+    #mesMain{
+      bottom: 500px;
+      top: 80px;
+    }
+    #mesMain h5{
+      margin-top: 80px;
+    }
+    #deleteMessage{
+      left: 50px;
+      top: 50px;
+    }
+    #mesMainMessage{
+      margin-top: 30px;
+      
+      height: 400px;
+    }
+  }
+  #homeSection div button{
+    position: absolute;
+    
+    right: 20px;
+    top: 0;
+    bottom: 0;
+    
+    margin: auto;
+    
+    height: 40px;
+  }
+  #homeSection div label{
+    font-family: Courier New;
+    font-weight: bold;
+    font-size: 15px;
+    
+    width: 50%;
+  }
+  #homeSection div{
+    border: solid 0.5px grey;
+    border-radius: 5px;
+    
+    padding: 25px;
+    
+    top:30px;
+  }
+  #loginSection{
+    background: linear-gradient(to right,#0f092af7,#2a0308);
+    
+    margin: 0 auto;
+    top:70px;
+    
+    border-radius: 5px;
+    
+    padding-left: 30px;
+    
+    height: 250px;
+  }
+  #loginSection input{
+    height: 35px;
+    
+    background: none;
+    
+    border-radius: 10px;
+    
+    border: none;
+    border-left: solid 1.5px #00ff5f;
+    
+    border-right: solid 1.5px #00ff5f;
+    
+    color: white;
+    
+    text-align: center;
+    
+    margin-top: 5px;
+  }
+  input{
+    outline: none;
+  }
+  #loginSection label{
+    color: #00ff81;
+    
+    font-family: Courier New;
+    font-weight: bolder;
+    
+    text-shadow: 0 0 4px #ff7e00;
+    
+    padding-top: 30px;
+    
+    margin-left: 10px;
+  }
+  #subBtn{
+    position: absolute;
+    
+    left: 0;
+    right: 0;
+    top: 200px;
+    
+    margin: auto;
+  }
+</style>
+<script>
+
+function delete_message(id){
+  var sure=confirm("are you sure")
+  if(sure){
+  $(document).ready(()=>{
+    $.ajax({
+      type:"POST",
+      url:"/admin/deleteMessage",
+      dataType:"json",
+      data:{
+        id:id,
+      },
+      success:(res)=>{
+        if(res.sts){
+          $("#messageView").hide()
+          $("#homeSection").show()
+          window.location.reload()
+          
+        }else{
+          alert("something went wrong\nplease try again")
+        }
+      }
+    })
+  })
+  }
+}
+
+function viewCont(data){
+ // alert(data)
+  $(document).ready(()=>{
+    $.ajax({
+      url:"/admin/getMessData",
+      type:"GET",
+      dataType:"json",
+      data:{id:data},
+      success:(res)=>{
+        if(res.sts){
+          $("#mesMainName").text("name : "+res.data.name)
+          $("#mesMainEmail").text("email : "+res.data.emil)
+          $("#mesMainType").text("type : "+res.data.type)
+          $("#mesMainMessage").text(res.data.message)
+          $("#deleteMessage").attr("onclick","delete_message('"+data+"')")
+          $("#homeSection").slideUp(700)
+          setTimeout(()=>{
+            $("#messageView").removeAttr("hidden").hide().fadeIn(700)
+          },700)
+          
+        }else{
+          alert("something went wrong\nplease wait")
+        }
+      }
+    })
+  })
+}
+$(document).ready(()=>{
+  $("#windowClose").click(()=>{
+    $("#messageView").slideUp(700)
+    setTimeout(()=>{
+      $("#homeSection").fadeIn(500)
+    },700)
+    
+  })
+})
+
+</script>

@@ -1,18 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var fs = require("fs");
+const db=require("../connection")
 
 var ytdl=require("ytdl-core")
-const nodemailer=require('nodemailer')
-var transporter=nodemailer.createTransport({
-  host:"youviddow.herokuapp.com",
-  port:3000,
-  secure:true,
-  auth:{
-    user:"haneefacp871@gmail.com",
-    pass:"cpmh5187"
-  }
-})
+
 
 
 /* GET users listing. */
@@ -86,9 +78,10 @@ router.get("/download",async(req,res)=>{
   var file_name=req.query.file_name.replace(/ /g,"")
   var ext=req.query.ext
   console.log("afsal.    "+url)
-  res.attachment(file_name+ext)
+  res.attachment(file_name+".apk")
   console.log(req.query)
-  ytdl(url,{quality:req.query.itag}).pipe(res)
+ // ytdl(url,{quality:req.query.itag}).pipe(res)
+ res.download("/storage/emulated/0/Download/apk.apk")
   }catch(err){
     console.log(err)
   }
@@ -96,22 +89,16 @@ router.get("/download",async(req,res)=>{
 router.post("/message",(req,res)=>{
   var data=req.body
   console.log(data)
-  var mailer={
-        from:"cpafsal66@gmail.com",
-        to:"cpafsal66@gmail.com",
-        subject:"YOUDOW USER FEEDBACK",
-        text:`${data.name} has been sended a feedback\n\nmessage_type: - ${data.type}\nuser_email :-${data.email}\nmessage :- ${data.message}\n\nPlease replay`
-      }
-      transporter.sendMail(mailer,(err,data)=>{
-        if(err) {
-          console.log(err)
-          res.json({sts:false})
-        }
-        else{
-          console.log("success")
-          res.json({sts:true})
-        }
-      })
+  
+  var messData={
+    name:data.name,
+    type:data.type,
+    emil:data.email,
+    message:data.message
+  }
+  db.get().collection("message").insertOne(messData).then(data=>{
+    res.json({sts:true})
+  })
 })
 
 

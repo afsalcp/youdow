@@ -8,7 +8,19 @@ var bodyParser=require("body-parser")
 var adminRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+var session=require('express-session')
+
 var app = express();
+
+var db=require("./connection")
+
+db.connect(err=>{
+  if(err){
+    console.log("database not connected")
+  }else{
+    console.log("database connected")
+  }
+})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -20,6 +32,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser())
+app.use(session({secret:"key",cookie:{maxAge:432000000}}))
 
 
 app.use('/', usersRouter);
