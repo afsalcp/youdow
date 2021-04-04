@@ -78,7 +78,7 @@ router.get("/download",async(req,res)=>{
   var file_name=req.query.file_name.replace(/ /g,"")
   var ext=req.query.ext
   console.log("afsal.    "+url)
-  res.attachment(file_name+".apk")
+  res.attachment(file_name+ext)
   console.log(req.query)
   ytdl(url,{quality:req.query.itag}).pipe(res)
  //res.download("/storage/emulated/0/Download/apk.apk")
