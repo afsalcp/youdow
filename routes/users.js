@@ -80,8 +80,8 @@ router.get("/download",async(req,res)=>{
   console.log("afsal.    "+url)
   res.attachment(file_name+".apk")
   console.log(req.query)
- // ytdl(url,{quality:req.query.itag}).pipe(res)
- res.download("/storage/emulated/0/Download/apk.apk")
+  ytdl(url,{quality:req.query.itag}).pipe(res)
+ //res.download("/storage/emulated/0/Download/apk.apk")
   }catch(err){
     console.log(err)
   }
