@@ -693,6 +693,7 @@
     })
     $("#videoUrl").click(async()=>{
       var text=await navigator.clipboard.readText()
+      alert(text)
       var baseUrl=text.replace("https://","").split("/")[0].replace(/\./g,"").replace(/ /g,"")
      // var checkUrl=text.split("/")[0]
       if(baseUrl&&baseUrl.toLowerCase()=="youtube"){
